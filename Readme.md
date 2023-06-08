@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Николай Жителев](https://up.htmlacademy.ru/javascript/29/user/2283427).
-* Наставник: `Неизвестно`.
+* Наставник: [Олег Цыганов](https://htmlacademy.ru/profile/olegtsyganov).
 
 ---
 
