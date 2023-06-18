@@ -101,6 +101,11 @@ const createComment = function () {
   };
 };
 
+const commentsList = [];
+for (let i = 0; i < getRandomInteger(0, 30); i++) {
+  commentsList.push(createComment());
+}
+
 const createDescriptionPhoto = function () {
   const generateId = createRandomIdFromRangeGenerator(1, 25);
   const generateUrl = createRandomIdFromRangeGenerator(1, 25);
@@ -112,7 +117,7 @@ const createDescriptionPhoto = function () {
     url: `photos/${generateUrl()}.jpg`,
     description: DESCRIPTIONS[randomDescriptionIndex],
     likes: generateLikes,
-    comments: createComment(),
+    comments: commentsList,
   };
 };
 
