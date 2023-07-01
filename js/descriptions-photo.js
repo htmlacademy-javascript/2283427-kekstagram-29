@@ -1,4 +1,4 @@
-import {getRandomInteger, createRandomIdFromRangeGenerator} from './util.js';
+import { getRandomInteger, createRandomIdFromRangeGenerator, getRandomArrayElement } from './util.js';
 
 const NAMES = [
   'Александр',
@@ -65,42 +65,33 @@ const DESCRIPTIONS = [
   'Бегемот и Defender',
 ];
 
-const createComment = function () {
-  const randomMessageIndex = getRandomInteger(0, MESSAGES.length - 1);
-  const randomNamesIndex = getRandomInteger(0, NAMES.length - 1);
-  const generateId = createRandomIdFromRangeGenerator(0, 30);
-  return {
-    id: generateId(),
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-    message: MESSAGES[randomMessageIndex],
-    name: NAMES[randomNamesIndex],
-  };
+const COUNT = 25;
+
+const generateId = createRandomIdFromRangeGenerator(1, 25);
+const generateUrl = createRandomIdFromRangeGenerator(1, 25);
+const generateCommentId = createRandomIdFromRangeGenerator(1, 30);
+
+const getRandomMessage = () => {
+  if (getRandomInteger(1, 2) === 1) {
+    return getRandomArrayElement(MESSAGES);
+  } return `${getRandomArrayElement(MESSAGES)} ${getRandomArrayElement(MESSAGES)}`;
 };
 
-const commentsList = [];
-for (let i = 0; i < getRandomInteger(0, 30); i++) {
-  commentsList.push(createComment());
-}
+const createComment = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  message: getRandomMessage(),
+  name: getRandomArrayElement(NAMES),
+});
 
-const createDescriptionPhoto = function () {
-  const generateId = createRandomIdFromRangeGenerator(1, 25);
-  const generateUrl = createRandomIdFromRangeGenerator(1, 25);
-  const generateLikes = getRandomInteger(15, 200);
-  const randomDescriptionIndex = getRandomInteger(0, DESCRIPTIONS.length - 1);
+const createDescription = () => ({
+  id: generateId(),
+  url: `photos/${generateUrl()}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInteger(15, 200),
+  comments: Array.from({ length: getRandomInteger(0, 30) }, createComment),
+});
 
-  return {
-    id: generateId(),
-    url: `photos/${generateUrl()}.jpg`,
-    description: DESCRIPTIONS[randomDescriptionIndex],
-    likes: generateLikes,
-    comments: commentsList,
-  };
-};
+const someCreateDescription = () => Array.from({ length: COUNT }, createDescription);
 
-const descriptionsPhoto = [];
-for (let i = 0; i < 25; i++) {
-  descriptionsPhoto.push(createDescriptionPhoto());
-}
-
-// console.log(descriptionsPhoto);
-// В консоль попадет массив из 25 карточек.
+export { someCreateDescription };
