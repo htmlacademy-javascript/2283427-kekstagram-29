@@ -1,4 +1,4 @@
-import { getRandomInteger, createRandomIdFromRangeGenerator, getRandomArrayElement } from './util.js';
+import { getRandomPositiveInteger, createRandomIdFromRangeGenerator, getRandomArrayElement } from './utilities.js';
 
 const NAMES = [
   'Александр',
@@ -72,14 +72,14 @@ const generateUrl = createRandomIdFromRangeGenerator(1, 25);
 const generateCommentId = createRandomIdFromRangeGenerator(1, 30);
 
 const getRandomMessage = () => {
-  if (getRandomInteger(1, 2) === 1) {
+  if (getRandomPositiveInteger(1, 2) === 1) {
     return getRandomArrayElement(MESSAGES);
   } return `${getRandomArrayElement(MESSAGES)} ${getRandomArrayElement(MESSAGES)}`;
 };
 
 const createComment = () => ({
   id: generateCommentId(),
-  avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+  avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
   message: getRandomMessage(),
   name: getRandomArrayElement(NAMES),
 });
@@ -88,8 +88,8 @@ const createDescription = () => ({
   id: generateId(),
   url: `photos/${generateUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
-  likes: getRandomInteger(15, 200),
-  comments: Array.from({ length: getRandomInteger(0, 30) }, createComment),
+  likes: getRandomPositiveInteger(15, 200),
+  comments: Array.from({ length: getRandomPositiveInteger(0, 30) }, createComment),
 });
 
 const someCreateDescription = () => Array.from({ length: COUNT }, createDescription);
