@@ -10,7 +10,7 @@ const createItem = (item) => {
   const pictureImg = pictureItem.querySelector('.picture__img');
   const pictureComments = pictureItem.querySelector('.picture__comments');
   const pictureLikes = pictureItem.querySelector('.picture__likes');
-
+  pictureImg.id = item.id;
   pictureImg.src = item.url;
   pictureImg.alt = item.description;
   pictureComments.textContent = item.comments.length;
@@ -24,4 +24,7 @@ picturesUser.forEach((picture) => {
   picturesListFragment.append(pictureItem);
 });
 
-export { picturesListFragment };
+const picturesList = document.querySelector('.pictures');
+picturesList.append(picturesListFragment);
+
+export { picturesUser };

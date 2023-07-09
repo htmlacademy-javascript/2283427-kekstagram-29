@@ -1,4 +1,2 @@
-import { picturesListFragment } from './rendering-thumbnail.js';
-
-const picturesList = document.querySelector('.pictures');
-picturesList.append(picturesListFragment);
+import './rendering-thumbnail.js';
+import './open-big-picture.js';
