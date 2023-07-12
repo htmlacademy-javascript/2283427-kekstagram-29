@@ -1,8 +1,8 @@
 import { picturesUser } from './rendering-thumbnail.js';
+import { closesModal, opensModal } from './utilities.js';
 
 const COMMENT_PER_PORTION = 5;
 
-const body = document.querySelector('body');
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count');
@@ -13,6 +13,7 @@ const closeButton = bigPicture.querySelector('.big-picture__cancel');
 const pictureComments = bigPicture.querySelector('.social__comments');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const commentsCountList = bigPicture.querySelector('.social__comment-count');
+const pictures = document.querySelectorAll('.picture');
 let commentsShowArray = [];
 
 const onPictureEsc = (evt) => {
@@ -23,8 +24,7 @@ const onPictureEsc = (evt) => {
 
 // Закрытие картинки
 function closePhoto() {
-  body.classList.remove('modal-open');
-  bigPicture.classList.add('hidden');
+  closesModal(bigPicture);
   document.removeEventListener('keydown', onPictureEsc);
   closeButton.removeEventListener('click', closePhoto);
   bigPictureCommentsLoader.removeEventListener('click', getLoadComments);
@@ -97,8 +97,7 @@ function openBigPicture(picture, item) {
     bigPictureCommentsCount.classList.remove('hidden');
     bigPictureCommentsLoader.classList.remove('hidden');
     commentsShowArray = item.comments;
-    body.classList.add('modal-open');
-    bigPicture.classList.remove('hidden');
+    opensModal(bigPicture);
     bigPictureImg.src = item.url;
     likesCount.textContent = item.likes;
     commentsCount.textContent = item.comments.length;
@@ -110,8 +109,6 @@ function openBigPicture(picture, item) {
     closeButton.addEventListener('click', closePhoto);
   });
 }
-
-const pictures = document.querySelectorAll('.picture');
 
 for (let i = 0; i < pictures.length; i++) {
   openBigPicture(pictures[i], picturesUser[i]);
