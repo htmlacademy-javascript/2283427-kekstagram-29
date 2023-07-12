@@ -1,4 +1,6 @@
 import { closesModal, opensModal, checksDuplicateElements, normalizeString } from './utilities.js';
+import { resetScale } from './scale.js';
+import { resetEffects } from './effect.js';
 
 const uploadImg = document.querySelector('.img-upload');
 const uploadInputImg = uploadImg.querySelector('.img-upload__input');
@@ -29,6 +31,8 @@ const pristine = new Pristine(uploadFormImg, {
 // Закрытие формы
 function closeModalForm() {
   uploadFormImg.reset();
+  resetScale();
+  resetEffects();
   pristine.reset();
   closesModal(uploadOverlayImg);
   document.removeEventListener('keydown', onModalEsc);
