@@ -1,21 +1,27 @@
 import { someCreateDescription } from './descriptions-photo.js';
 
+// Глобальные переменные
 const pictureTemplate = document.querySelector('#picture').content;
-const pictureItemTemplate = pictureTemplate.querySelector('.picture');
 const picturesUser = someCreateDescription();
 const picturesListFragment = document.createDocumentFragment();
+const picturesList = document.querySelector('.pictures');
 
+/** Создание постов */
 const createItem = (item) => {
-  const pictureItem = pictureItemTemplate.cloneNode(true);
-  const pictureImg = pictureItem.querySelector('.picture__img');
-  const pictureComments = pictureItem.querySelector('.picture__comments');
-  const pictureLikes = pictureItem.querySelector('.picture__likes');
-  pictureImg.id = item.id;
-  pictureImg.src = item.url;
-  pictureImg.alt = item.description;
-  pictureComments.textContent = item.comments.length;
-  pictureLikes.textContent = item.likes;
+  const { url, id, comments, likes, description } = item;
+  const pictureItem = pictureTemplate.cloneNode(true);
 
+  pictureItem.querySelector('.picture').href = url;
+  pictureItem.querySelector('.picture').id = id;
+  pictureItem.querySelector('.picture__img').src = url;
+  pictureItem.querySelector('.picture__img').alt = description;
+  pictureItem.querySelector('.picture__comments').textContent = comments.length;
+  pictureItem.querySelector('.picture__likes').textContent = likes;
+
+  pictureItem.querySelector('.picture').addEventListener('click', (evt) => {
+    evt.preventDefault();
+    picturesUser(item);
+  });
   return pictureItem;
 };
 
@@ -24,7 +30,6 @@ picturesUser.forEach((picture) => {
   picturesListFragment.append(pictureItem);
 });
 
-const picturesList = document.querySelector('.pictures');
 picturesList.append(picturesListFragment);
 
 export { picturesUser };

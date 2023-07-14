@@ -1,8 +1,8 @@
 import { picturesUser } from './rendering-thumbnail.js';
 import { closesModal, opensModal } from './utilities.js';
+import { COMMENT_PER_PORTION } from './data.js';
 
-const COMMENT_PER_PORTION = 5;
-
+// Глобальные переменные
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count');
@@ -22,7 +22,7 @@ const onPictureEsc = (evt) => {
   }
 };
 
-// Закрытие картинки
+/** Закрытие картинки */
 function closePhoto() {
   closesModal(bigPicture);
   document.removeEventListener('keydown', onPictureEsc);

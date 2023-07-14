@@ -1,7 +1,9 @@
 import { closesModal, opensModal, checksDuplicateElements, normalizeString } from './utilities.js';
 import { loadScale, resetScale } from './scale.js';
 import { loadEffects, resetEffects } from './effects.js';
+import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS, MessageError } from './data.js';
 
+// Глобальные переменные
 const uploadImg = document.querySelector('.img-upload');
 const uploadInputImg = uploadImg.querySelector('.img-upload__input');
 const uploadOverlayImg = uploadImg.querySelector('.img-upload__overlay');
@@ -10,6 +12,7 @@ const textHashtags = uploadFormImg.querySelector('.text__hashtags');
 const textDescription = uploadFormImg.querySelector('.text__description');
 const closeFormButton = uploadFormImg.querySelector('.img-upload__cancel');
 
+// Если поле в фокусе, то форма не закроется через Esc
 const inputInFocused = function () {
   if (document.activeElement === textHashtags || document.activeElement === textDescription) {
     return true;
@@ -23,12 +26,18 @@ const onModalEsc = (evt) => {
   }
 };
 
+// Валидация PristineJS
 const pristine = new Pristine(uploadFormImg, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-// Закрытие формы
+/*
+ Закрытие формы.
+ Используется function declaration, т.к. при использовании
+ стрелочной функции, линтер ругается на использование функции
+ до её объявления (в блоке "Закрытие Esc")
+*/
 function closeModalForm() {
   uploadFormImg.reset();
   resetScale();
@@ -40,30 +49,17 @@ function closeModalForm() {
 }
 
 // Открытие формы
-function openModalForm() {
+const openModalForm = () => {
   opensModal(uploadOverlayImg);
   document.addEventListener('keydown', onModalEsc);
   closeFormButton.addEventListener('click', closeModalForm);
   loadScale();
   loadEffects();
-}
+};
 
 uploadInputImg.addEventListener('change', () => {
   openModalForm();
 });
-
-// Валидация PristineJS
-const MAX_QUANTITY_TAGS = 5;
-const MAX_LENGTH_TAG = 20;
-const IS_VALIDE_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
-
-const messageError = {
-  REPEAT_HASHTAGS: 'хэш-теги повторяются',
-  INVALID_HASHTAG: 'введён невалидный хэш-тег',
-  QUANTITY_HASHTAGS: 'превышено количество хэш-тегов',
-  MAX_LENGTH_HASHTAG: `максимальная длина одного хэш-тега ${MAX_LENGTH_TAG} символов, включая решётку`,
-  RESET_ERROR: '',
-};
 
 // Сброс ошибок при пустом поле
 const resetErrors = () => textHashtags.value === '';
@@ -83,10 +79,11 @@ const hasValidQuantity = (value) => normalizeString(value).length <= MAX_QUANTIT
 // Максимальная длина хэштега
 const hasMaxLengthTag = (value) => normalizeString(value).every((tag) => tag.length <= MAX_LENGTH_TAG);
 
+// Результаты проверок валидности хэштегов
 pristine.addValidator(
   textHashtags,
   resetErrors,
-  messageError.RESET_ERROR,
+  MessageError.RESET_ERROR,
   1,
   true
 );
@@ -94,7 +91,7 @@ pristine.addValidator(
 pristine.addValidator(
   textHashtags,
   hasUniqueHashtags,
-  messageError.REPEAT_HASHTAGS,
+  MessageError.REPEAT_HASHTAGS,
   2,
   true
 );
@@ -102,7 +99,7 @@ pristine.addValidator(
 pristine.addValidator(
   textHashtags,
   hasValidHashtags,
-  messageError.INVALID_HASHTAG,
+  MessageError.INVALID_HASHTAG,
   3,
   true
 );
@@ -110,7 +107,7 @@ pristine.addValidator(
 pristine.addValidator(
   textHashtags,
   hasValidQuantity,
-  messageError.QUANTITY_HASHTAGS,
+  MessageError.QUANTITY_HASHTAGS,
   4,
   true
 );
@@ -118,13 +115,12 @@ pristine.addValidator(
 pristine.addValidator(
   textHashtags,
   hasMaxLengthTag,
-  messageError.MAX_LENGTH_HASHTAG,
+  MessageError.MAX_LENGTH_HASHTAG,
   5,
   true
 );
 
 // Блокировка отправки невалидной формы
-
 uploadFormImg.addEventListener('submit', (evt) => {
   if(!pristine.validate()) {
     evt.preventDefault();
