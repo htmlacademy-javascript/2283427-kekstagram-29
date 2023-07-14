@@ -92,7 +92,8 @@ function fillComments({comments}) {
 * @param {object} item - объект картинки, которую мы генирировали в descriptions-photo. Сюда передается именно объект той миниатюры по который мы кликнули. Передаем сюда этот объект в файле main.js
 */
 function openBigPicture(picture, item) {
-  picture.addEventListener('click', () => {
+  picture.addEventListener('click', (evt) => {
+    evt.preventDefault();
     pictureComments.innerHTML = '';
     bigPictureCommentsCount.classList.remove('hidden');
     bigPictureCommentsLoader.classList.remove('hidden');

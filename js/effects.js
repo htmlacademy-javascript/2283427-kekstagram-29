@@ -99,9 +99,11 @@ const onSliderUpdate = () => {
   effectValue.value = sliderValue;
 };
 
+
 const resetEffects = () => {
   currentFilter = defaultFilter;
   updateSlider();
+  effectsContainer.removeEventListener('change', filtersChange);
 };
 
 noUiSlider.create(levelSlider, {
@@ -115,7 +117,9 @@ noUiSlider.create(levelSlider, {
 });
 closeSlider();
 
-effectsContainer.addEventListener('change', filtersChange);
-levelSlider.noUiSlider.on('update', onSliderUpdate);
+const loadEffects = () => {
+  effectsContainer.addEventListener('change', filtersChange);
+  levelSlider.noUiSlider.on('update', onSliderUpdate);
+};
 
-export { resetEffects };
+export { resetEffects, loadEffects };

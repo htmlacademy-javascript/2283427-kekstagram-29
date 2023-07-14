@@ -1,6 +1,6 @@
 import { closesModal, opensModal, checksDuplicateElements, normalizeString } from './utilities.js';
-import { resetScale } from './scale.js';
-import { resetEffects } from './effect.js';
+import { loadScale, resetScale } from './scale.js';
+import { loadEffects, resetEffects } from './effects.js';
 
 const uploadImg = document.querySelector('.img-upload');
 const uploadInputImg = uploadImg.querySelector('.img-upload__input');
@@ -44,6 +44,8 @@ function openModalForm() {
   opensModal(uploadOverlayImg);
   document.addEventListener('keydown', onModalEsc);
   closeFormButton.addEventListener('click', closeModalForm);
+  loadScale();
+  loadEffects();
 }
 
 uploadInputImg.addEventListener('change', () => {

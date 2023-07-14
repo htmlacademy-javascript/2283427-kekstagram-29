@@ -36,9 +36,17 @@ const onBigControlClick = () => {
   }
 };
 
-const resetScale = () => scaleImg(DEFAULT_VALUE);
 
-smallControl.addEventListener('click', onSmallControlClick);
-bigControl.addEventListener('click', onBigControlClick);
+const resetScale = () => {
+  scaleImg(DEFAULT_VALUE);
+  smallControl.removeEventListener('click', onSmallControlClick);
+  bigControl.removeEventListener('click', onBigControlClick);
+};
 
-export { resetScale };
+const loadScale = () => {
+  smallControl.addEventListener('click', onSmallControlClick);
+  bigControl.addEventListener('click', onBigControlClick);
+};
+
+
+export { resetScale, loadScale };
