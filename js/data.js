@@ -1,5 +1,7 @@
+// Данные для отображения комментариев
 const COMMENT_PER_PORTION = 5;
 
+// Данные для создания миниатюр
 const NAMES = [
   'Александр',
   'Дмитрий',
@@ -67,7 +69,7 @@ const DESCRIPTIONS = [
 
 const COUNT = 25;
 
-// Валидация PristineJS
+// Данные для валидации
 const MAX_QUANTITY_TAGS = 5;
 const MAX_LENGTH_TAG = 20;
 const IS_VALIDE_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
@@ -80,11 +82,13 @@ const MessageError = {
   RESET_ERROR: '',
 };
 
+// Данные для масштаба
 const STEP_VALUE = 25;
 const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 const DEFAULT_VALUE = 100;
 
+// Данные для эффектов
 const FILTERS = [
   {
     name: 'none',

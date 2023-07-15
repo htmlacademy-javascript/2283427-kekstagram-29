@@ -26,6 +26,9 @@ const createRandomIdFromRangeGenerator = (min, max) => {
   };
 };
 
+/** keyCode Esc */
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 /** Закрывает окно */
 const closesModal = (item) => {
   document.body.classList.remove('modal-open');
@@ -44,4 +47,13 @@ const checksDuplicateElements = (arr) => arr.length === new Set(arr).size;
 /** Приводит строку к нижнему регистру и удаляет концевые пробелы */
 const normalizeString = (str) => str.trim().split(' ').filter((string) => Boolean(string.length));
 
-export { getRandomArrayElement, getRandomPositiveInteger, createRandomIdFromRangeGenerator, closesModal, opensModal, checksDuplicateElements, normalizeString };
+export {
+  getRandomArrayElement,
+  getRandomPositiveInteger,
+  createRandomIdFromRangeGenerator,
+  isEscapeKey,
+  closesModal,
+  opensModal,
+  checksDuplicateElements,
+  normalizeString
+};

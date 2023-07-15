@@ -1,5 +1,5 @@
 import { picturesUser } from './rendering-thumbnail.js';
-import { closesModal, opensModal } from './utilities.js';
+import { closesModal, opensModal, isEscapeKey } from './utilities.js';
 import { COMMENT_PER_PORTION } from './data.js';
 
 // Глобальные переменные
@@ -16,8 +16,9 @@ const commentsCountList = bigPicture.querySelector('.social__comment-count');
 const pictures = document.querySelectorAll('.picture');
 let commentsShowArray = [];
 
-const onPictureEsc = (evt) => {
-  if (evt.key === 'Escape') {
+/** Закрытие по Esc */
+const closePhotoEsc = (evt) => {
+  if (isEscapeKey(evt)) {
     closePhoto();
   }
 };
@@ -25,7 +26,7 @@ const onPictureEsc = (evt) => {
 /** Закрытие картинки */
 function closePhoto() {
   closesModal(bigPicture);
-  document.removeEventListener('keydown', onPictureEsc);
+  document.removeEventListener('keydown', closePhotoEsc);
   closeButton.removeEventListener('click', closePhoto);
   bigPictureCommentsLoader.removeEventListener('click', getLoadComments);
 }
@@ -34,7 +35,7 @@ function closePhoto() {
 Генерация комментариев
 * @param {array} comments - массив комментариев из объекта
 */
-function createPictureComments(comments) {
+const createPictureComments = (comments) => {
   comments.forEach((comment) => {
     const element = document.createElement('li');
     const img = document.createElement('img');
@@ -49,11 +50,9 @@ function createPictureComments(comments) {
     element.append(text);
     pictureComments.append(element);
   });
-}
+};
 
-/**
-Отрисовка следующей порции комментариев
-*/
+/** Отрисовка следующей порции комментариев */
 function getLoadComments () {
   if (!commentsShowArray.length) {
     return;
@@ -91,7 +90,7 @@ function fillComments({comments}) {
 * @param {string} picture - DOM-элемент миниатюры, по которой мы кликаем
 * @param {object} item - объект картинки, которую мы генирировали в descriptions-photo. Сюда передается именно объект той миниатюры по который мы кликнули. Передаем сюда этот объект в файле main.js
 */
-function openBigPicture(picture, item) {
+const openBigPicture = (picture, item) => {
   picture.addEventListener('click', (evt) => {
     evt.preventDefault();
     pictureComments.innerHTML = '';
@@ -106,11 +105,13 @@ function openBigPicture(picture, item) {
     bigPictureCommentsLoader.addEventListener('click', getLoadComments);
 
     fillComments(item);
-    document.addEventListener('keydown', onPictureEsc);
+    document.addEventListener('keydown', closePhotoEsc);
     closeButton.addEventListener('click', closePhoto);
   });
-}
+};
 
 for (let i = 0; i < pictures.length; i++) {
   openBigPicture(pictures[i], picturesUser[i]);
 }
+
+export { openBigPicture };
