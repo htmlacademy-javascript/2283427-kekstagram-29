@@ -1,18 +1,23 @@
-import './rendering-thumbnail.js';
-import './open-big-picture.js';
-import './valid-form.js';
-import './scale.js';
-import './effects.js';
-import { getData } from './api.js';
+import { getData, sendData } from './api.js';
 import { showAlert } from './alert.js';
-import { createSendForm} from './valid-form.js';
-import { renderPictureModal } from './gallery.js';
+import { createSendForm, closeModalForm } from './valid-form.js';
+import { renderGallery } from './gallery.js';
+import { showSuccessMessage, showErrorMessage } from './message.js';
 
-createSendForm();
+
+createSendForm(async (data) => {
+  try {
+    await sendData(data);
+    closeModalForm();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  }
+});
 
 try {
   const data = await getData();
-  renderPictureModal(data);
+  renderGallery(data);
 } catch (err) {
   showAlert(err.message);
 }

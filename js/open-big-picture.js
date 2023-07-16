@@ -1,4 +1,4 @@
-import { picturesUser } from './rendering-thumbnail.js';
+import { createThumbnails } from './rendering-thumbnail.js';
 import { closesModal, opensModal, isEscapeKey } from './utilities.js';
 import { COMMENT_PER_PORTION } from './data.js';
 
@@ -111,7 +111,7 @@ const openBigPicture = (picture, item) => {
 };
 
 for (let i = 0; i < pictures.length; i++) {
-  openBigPicture(pictures[i], picturesUser[i]);
+  openBigPicture(pictures[i], createThumbnails[i]);
 }
 
 export { openBigPicture };

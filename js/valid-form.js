@@ -2,8 +2,6 @@ import { closesModal, opensModal, checksDuplicateElements, normalizeString, isEs
 import { loadScale, resetScale } from './scale.js';
 import { loadEffects, resetEffects } from './effects.js';
 import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS, MessageError } from './data.js';
-import { sendData } from './api.js';
-import { showErrorMessage, showSuccessMessage } from './message.js';
 
 // Глобальные переменные
 const uploadFile = document.querySelector('#upload-file');
@@ -59,6 +57,7 @@ const openModalForm = () => {
   closeFormButton.addEventListener('click', closeModalForm);
   loadScale();
   loadEffects();
+  textDescription.value = '';
 };
 
 uploadInputImg.addEventListener('change', () => {
@@ -134,31 +133,19 @@ const unblockSubmitButton = () => {
 };
 
 /** Обработчик отправки формы */
-const createSendForm = () => {
-  uploadFormImg.addEventListener('submit', (evt) => {
+const createSendForm = (cb) => {
+  uploadFormImg.addEventListener('submit', async (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
-    const formData = new FormData(evt.target);
 
     if (isValid) {
       blockSubmitButton();
-      sendData(formData)
-        .then(() => {
-          closeModalForm();
-          showSuccessMessage();
-        })
-        .catch(
-          () => {
-            showErrorMessage();
-          }
-        )
-        .finally(unblockSubmitButton);
+      await cb(new FormData(uploadFormImg));
+      unblockSubmitButton();
     }
   });
-  const uploadFileEditor = () => {
-    uploadFile.addEventListener('change', openModalForm);
-  };
-  uploadFileEditor();
 };
+
+uploadFile.addEventListener('change', openModalForm);
 
 export { onModalEsc, closeModalForm, createSendForm };
