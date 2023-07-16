@@ -2,8 +2,9 @@ import { getRandomPositiveInteger, createRandomIdFromRangeGenerator, getRandomAr
 import { NAMES, MESSAGES, DESCRIPTIONS, COUNT } from './data.js';
 
 // Сгенерированные данные
+const generateId = createRandomIdFromRangeGenerator(1, 25);
+const generateUrl = createRandomIdFromRangeGenerator(1, 25);
 const generateCommentId = createRandomIdFromRangeGenerator(1, 30);
-const arrCards = [];
 
 /** Отрисовка одного или двух предложений в комментарии */
 const getRandomMessage = () => {
@@ -14,40 +15,22 @@ const getRandomMessage = () => {
 
 /** Создание поля с комментарием */
 const createComment = () => ({
-  id : generateCommentId(),
-  avatar : `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
-  message : getRandomMessage(),
-  name : getRandomArrayElement(NAMES),
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
+  message: getRandomMessage(),
+  name: getRandomArrayElement(NAMES),
 });
 
-/**
- * Генерирует комментарии
- * @param {number} quantity - количество сгенерированных комментариев
-*/
-const getRandomComments = (quantity) => {
-  const comments = [];
-  for (let i = 1; i <= quantity; i++) {
-    comments[i - 1] = createComment(generateCommentId);
-  }
-  return comments;
-};
-
 /** Создание поста */
-const createPhoto = (i) => ({
-  id: i,
-  url: `photos/${i}.jpg` ,
+const createDescription = () => ({
+  id: generateId(),
+  url: `photos/${generateUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomPositiveInteger(15, 200),
-  comments: getRandomComments(getRandomPositiveInteger (0, 30))
+  comments: Array.from({ length: getRandomPositiveInteger(0, 30) }, createComment),
 });
 
 /** Создание массива из указанного количества постов */
-const generatePhoto = () => {
-  for (let i = 1; i <= COUNT; i++){
-    arrCards[i - 1] = createPhoto(i);
-  }
+const generatePhoto = () => Array.from({ length: COUNT }, createDescription);
 
-  return arrCards;
-};
-
-export { generatePhoto, arrCards };
+export { generatePhoto };

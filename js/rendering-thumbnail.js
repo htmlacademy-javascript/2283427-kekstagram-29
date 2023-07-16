@@ -1,4 +1,4 @@
-import { generatePhoto, arrCards } from './descriptions-photo.js';
+import { generatePhoto } from './descriptions-photo.js';
 
 // Глобальные переменные
 const pictureTemplate = document.querySelector('#picture').content;
@@ -18,14 +18,13 @@ const createItem = (item) => {
   pictureItem.querySelector('.picture__comments').textContent = comments.length;
   pictureItem.querySelector('.picture__likes').textContent = likes;
 
-  pictureItem.querySelector('.picture').addEventListener('click', (evt) => {
+  pictureItem.addEventListener('click', (evt) => {
     evt.preventDefault();
-    picturesUser(item);
   });
   return pictureItem;
 };
 
-arrCards.forEach((picture) => {
+picturesUser.forEach((picture) => {
   const pictureItem = createItem(picture);
   picturesListFragment.append(pictureItem);
 });
