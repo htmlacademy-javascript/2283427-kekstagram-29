@@ -5,10 +5,10 @@ import './scale.js';
 import './effects.js';
 import { getData } from './api.js';
 import { showAlert } from './alert.js';
-import { initForm} from './valid-form.js';
+import { createSendForm} from './valid-form.js';
 import { renderPictureModal } from './gallery.js';
 
-initForm();
+createSendForm();
 
 try {
   const data = await getData();

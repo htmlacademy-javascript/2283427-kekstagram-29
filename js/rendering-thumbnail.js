@@ -1,8 +1,8 @@
-import { someCreateDescription } from './descriptions-photo.js';
+import { generatePhoto, arrCards } from './descriptions-photo.js';
 
 // Глобальные переменные
 const pictureTemplate = document.querySelector('#picture').content;
-const picturesUser = someCreateDescription();
+const picturesUser = generatePhoto();
 const picturesListFragment = document.createDocumentFragment();
 const picturesList = document.querySelector('.pictures');
 
@@ -25,7 +25,7 @@ const createItem = (item) => {
   return pictureItem;
 };
 
-picturesUser.forEach((picture) => {
+arrCards.forEach((picture) => {
   const pictureItem = createItem(picture);
   picturesListFragment.append(pictureItem);
 });

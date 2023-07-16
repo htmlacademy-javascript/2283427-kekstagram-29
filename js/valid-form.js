@@ -17,7 +17,7 @@ const closeFormButton = uploadFormImg.querySelector('.img-upload__cancel');
 const submitButton = uploadFormImg.querySelector('.img-upload__submit');
 
 const SubmitButtonText = {
-  IDLE: 'Сохранить',
+  REST: 'Сохранить',
   SENDING: 'Сохраняю...'
 };
 
@@ -130,11 +130,11 @@ const blockSubmitButton = () => {
 /** Разблокировка кнопки отправки формы */
 const unblockSubmitButton = () => {
   submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+  submitButton.textContent = SubmitButtonText.REST;
 };
 
 /** Обработчик отправки формы */
-const initForm = () => {
+const createSendForm = () => {
   uploadFormImg.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
@@ -161,4 +161,4 @@ const initForm = () => {
   uploadFileEditor();
 };
 
-export { onModalEsc, closeModalForm, initForm };
+export { onModalEsc, closeModalForm, createSendForm };
