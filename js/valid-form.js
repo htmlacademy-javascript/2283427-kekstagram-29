@@ -1,7 +1,10 @@
-import { closesModal, opensModal, checksDuplicateElements, normalizeString } from './utilities.js';
-import { resetScale } from './scale.js';
-import { resetEffects } from './effect.js';
+import { closesModal, opensModal, checksDuplicateElements, normalizeString, isEscapeKey } from './utilities.js';
+import { loadScale, resetScale } from './scale.js';
+import { loadEffects, resetEffects } from './effects.js';
+import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS, MessageError } from './data.js';
 
+// Глобальные переменные
+const uploadFile = document.querySelector('#upload-file');
 const uploadImg = document.querySelector('.img-upload');
 const uploadInputImg = uploadImg.querySelector('.img-upload__input');
 const uploadOverlayImg = uploadImg.querySelector('.img-upload__overlay');
@@ -9,26 +12,34 @@ const uploadFormImg = uploadImg.querySelector('.img-upload__form');
 const textHashtags = uploadFormImg.querySelector('.text__hashtags');
 const textDescription = uploadFormImg.querySelector('.text__description');
 const closeFormButton = uploadFormImg.querySelector('.img-upload__cancel');
+const submitButton = uploadFormImg.querySelector('.img-upload__submit');
 
-const inputInFocused = function () {
+const SubmitButtonText = {
+  REST: 'Сохранить',
+  SENDING: 'Сохраняю...'
+};
+
+/** Если поле в фокусе, то форма не закроется через Esc */
+const inputInFocused = () => {
   if (document.activeElement === textHashtags || document.activeElement === textDescription) {
     return true;
   }
 };
 
-// Закрытие Esc
+/** Закрытие Esc */
 const onModalEsc = (evt) => {
-  if (evt.key === 'Escape' && !inputInFocused()) {
+  if (isEscapeKey(evt) && !inputInFocused()) {
     closeModalForm();
   }
 };
 
+/** Конструктор PristineJS */
 const pristine = new Pristine(uploadFormImg, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
 });
 
-// Закрытие формы
+/** Закрытие формы */
 function closeModalForm() {
   uploadFormImg.reset();
   resetScale();
@@ -39,92 +50,102 @@ function closeModalForm() {
   closeFormButton.removeEventListener('click', closeModalForm);
 }
 
-// Открытие формы
-function openModalForm() {
+/** Открытие формы */
+const openModalForm = () => {
   opensModal(uploadOverlayImg);
   document.addEventListener('keydown', onModalEsc);
   closeFormButton.addEventListener('click', closeModalForm);
-}
+  loadScale();
+  loadEffects();
+  textDescription.value = '';
+};
 
 uploadInputImg.addEventListener('change', () => {
   openModalForm();
 });
 
-// Валидация PristineJS
-const MAX_QUANTITY_TAGS = 5;
-const MAX_LENGTH_TAG = 20;
-const IS_VALIDE_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
-
-const messageError = {
-  REPEAT_HASHTAGS: 'хэш-теги повторяются',
-  INVALID_HASHTAG: 'введён невалидный хэш-тег',
-  QUANTITY_HASHTAGS: 'превышено количество хэш-тегов',
-  MAX_LENGTH_HASHTAG: `максимальная длина одного хэш-тега ${MAX_LENGTH_TAG} символов, включая решётку`,
-  RESET_ERROR: '',
-};
-
-// Сброс ошибок при пустом поле
-const resetErrors = () => textHashtags.value === '';
-
-// Проверка хэштегов на уникальность
+/** Проверка хэштегов на уникальность */
 const hasUniqueHashtags = (value) => {
   const toLowerCaseTag = normalizeString(value).map((tag) => tag.toLowerCase());
   return checksDuplicateElements(toLowerCaseTag);
 };
 
-// Проверка валидности хэштега
+/** Проверка валидности хэштега */
 const hasValidHashtags = (value) => normalizeString(value).every((tag) => IS_VALIDE_HASHTAGS.test(tag));
 
-// Максимальное количество хэштегов
+/** Максимальное количество хэштегов */
 const hasValidQuantity = (value) => normalizeString(value).length <= MAX_QUANTITY_TAGS;
 
-// Максимальная длина хэштега
+/** Максимальная длина хэштега */
 const hasMaxLengthTag = (value) => normalizeString(value).every((tag) => tag.length <= MAX_LENGTH_TAG);
+
+// Результаты проверок валидности хэштегов
 
 pristine.addValidator(
   textHashtags,
-  resetErrors,
-  messageError.RESET_ERROR,
+  hasUniqueHashtags,
+  MessageError.REPEAT_HASHTAGS,
   1,
   true
 );
 
 pristine.addValidator(
   textHashtags,
-  hasUniqueHashtags,
-  messageError.REPEAT_HASHTAGS,
+  hasValidHashtags,
+  MessageError.INVALID_HASHTAG,
   2,
   true
 );
 
 pristine.addValidator(
   textHashtags,
-  hasValidHashtags,
-  messageError.INVALID_HASHTAG,
+  hasValidQuantity,
+  MessageError.QUANTITY_HASHTAGS,
   3,
   true
 );
 
 pristine.addValidator(
   textHashtags,
-  hasValidQuantity,
-  messageError.QUANTITY_HASHTAGS,
+  hasMaxLengthTag,
+  MessageError.MAX_LENGTH_HASHTAG,
   4,
   true
 );
 
-pristine.addValidator(
-  textHashtags,
-  hasMaxLengthTag,
-  messageError.MAX_LENGTH_HASHTAG,
-  5,
-  true
-);
-
 // Блокировка отправки невалидной формы
-
 uploadFormImg.addEventListener('submit', (evt) => {
   if(!pristine.validate()) {
     evt.preventDefault();
   }
 });
+
+/** Блокировка кнопки отправки формы */
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+/** Разблокировка кнопки отправки формы */
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.REST;
+};
+
+/** Обработчик отправки формы */
+const createSendForm = (cb) => {
+  uploadFormImg.addEventListener('submit', async (evt) => {
+    evt.preventDefault();
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      blockSubmitButton();
+      await cb(new FormData(uploadFormImg));
+      unblockSubmitButton();
+    }
+  });
+};
+
+uploadFile.addEventListener('change', openModalForm);
+
+export { onModalEsc, closeModalForm, createSendForm };

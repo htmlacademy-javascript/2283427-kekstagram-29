@@ -1,54 +1,6 @@
-const FILTERS = [
-  {
-    name: 'none',
-    style: 'none',
-    min: 0,
-    max: 100,
-    step: 1,
-    unit:''
-  },
-  {
-    name: 'chrome',
-    style: 'grayscale',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit:'',
-  },
-  {
-    name: 'sepia',
-    style: 'sepia',
-    min: 0,
-    max: 1,
-    step: 0.1,
-    unit:'',
-  },
-  {
-    name: 'marvin',
-    style: 'invert',
-    min: 0,
-    max: 100,
-    step: 1,
-    unit:'%',
-  },
-  {
-    name: 'phobos',
-    style: 'blur',
-    min: 0,
-    max: 3,
-    step: 0.1,
-    unit:'px',
-  },
-  {
-    name: 'heat',
-    style: 'brightness',
-    min: 1,
-    max: 3,
-    step: 0.1,
-    unit:'',
-  }
-];
+import { FILTERS } from './data.js';
 
+// Глобальные переменные
 const uploadPreviewImg = document.querySelector('.img-upload__preview img');
 const effectsContainer = document.querySelector('.effects');
 const effectValue = document.querySelector('.effect-level__value');
@@ -58,16 +10,20 @@ const levelSlider = document.querySelector('.effect-level__slider');
 const defaultFilter = FILTERS[0];
 let currentFilter = defaultFilter;
 
+/** Выбор фильтра по умолчанию */
 const isDefault = () => currentFilter === defaultFilter;
 
+/** Отрисовка слайдера */
 const openSlider = () => {
   levelSliderContainer.classList.remove('hidden');
 };
 
+/** Скрытие слайдера */
 const closeSlider = () => {
   levelSliderContainer.classList.add('hidden');
 };
 
+/** Обновление слайдера */
 const updateSlider = () => {
   levelSlider.noUiSlider.updateOptions({
     range: {
@@ -84,6 +40,7 @@ const updateSlider = () => {
   }
 };
 
+/** Выбор эффекта */
 const filtersChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
@@ -93,17 +50,21 @@ const filtersChange = (evt) => {
   updateSlider();
 };
 
+/** Передача выбранных параметров эффекта */
 const onSliderUpdate = () => {
   const sliderValue = levelSlider.noUiSlider.get();
   uploadPreviewImg.style.filter = isDefault() ? defaultFilter.style : `${currentFilter.style}(${sliderValue}${currentFilter.unit})`;
   effectValue.value = sliderValue;
 };
 
+/** Сброс эффектов. Удаление обработчика. */
 const resetEffects = () => {
   currentFilter = defaultFilter;
   updateSlider();
+  effectsContainer.removeEventListener('change', filtersChange);
 };
 
+/** Создание слайдера */
 noUiSlider.create(levelSlider, {
   range: {
     min: defaultFilter.min,
@@ -115,7 +76,10 @@ noUiSlider.create(levelSlider, {
 });
 closeSlider();
 
-effectsContainer.addEventListener('change', filtersChange);
-levelSlider.noUiSlider.on('update', onSliderUpdate);
+/** Добавление обработчиков на эффекты */
+const loadEffects = () => {
+  effectsContainer.addEventListener('change', filtersChange);
+  levelSlider.noUiSlider.on('update', onSliderUpdate);
+};
 
-export { resetEffects };
+export { resetEffects, loadEffects };

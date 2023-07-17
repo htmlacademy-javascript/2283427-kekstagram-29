@@ -1,8 +1,8 @@
-import { picturesUser } from './rendering-thumbnail.js';
-import { closesModal, opensModal } from './utilities.js';
+import { createThumbnails } from './rendering-thumbnail.js';
+import { closesModal, opensModal, isEscapeKey } from './utilities.js';
+import { COMMENT_PER_PORTION } from './data.js';
 
-const COMMENT_PER_PORTION = 5;
-
+// Глобальные переменные
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img img');
 const bigPictureCommentsCount = bigPicture.querySelector('.social__comment-count');
@@ -16,16 +16,17 @@ const commentsCountList = bigPicture.querySelector('.social__comment-count');
 const pictures = document.querySelectorAll('.picture');
 let commentsShowArray = [];
 
-const onPictureEsc = (evt) => {
-  if (evt.key === 'Escape') {
+/** Закрытие по Esc */
+const closePhotoEsc = (evt) => {
+  if (isEscapeKey(evt)) {
     closePhoto();
   }
 };
 
-// Закрытие картинки
+/** Закрытие картинки */
 function closePhoto() {
   closesModal(bigPicture);
-  document.removeEventListener('keydown', onPictureEsc);
+  document.removeEventListener('keydown', closePhotoEsc);
   closeButton.removeEventListener('click', closePhoto);
   bigPictureCommentsLoader.removeEventListener('click', getLoadComments);
 }
@@ -34,7 +35,7 @@ function closePhoto() {
 Генерация комментариев
 * @param {array} comments - массив комментариев из объекта
 */
-function createPictureComments(comments) {
+const createPictureComments = (comments) => {
   comments.forEach((comment) => {
     const element = document.createElement('li');
     const img = document.createElement('img');
@@ -49,11 +50,9 @@ function createPictureComments(comments) {
     element.append(text);
     pictureComments.append(element);
   });
-}
+};
 
-/**
-Отрисовка следующей порции комментариев
-*/
+/** Отрисовка следующей порции комментариев */
 function getLoadComments () {
   if (!commentsShowArray.length) {
     return;
@@ -91,8 +90,9 @@ function fillComments({comments}) {
 * @param {string} picture - DOM-элемент миниатюры, по которой мы кликаем
 * @param {object} item - объект картинки, которую мы генирировали в descriptions-photo. Сюда передается именно объект той миниатюры по который мы кликнули. Передаем сюда этот объект в файле main.js
 */
-function openBigPicture(picture, item) {
-  picture.addEventListener('click', () => {
+const openBigPicture = (picture, item) => {
+  picture.addEventListener('click', (evt) => {
+    evt.preventDefault();
     pictureComments.innerHTML = '';
     bigPictureCommentsCount.classList.remove('hidden');
     bigPictureCommentsLoader.classList.remove('hidden');
@@ -105,11 +105,13 @@ function openBigPicture(picture, item) {
     bigPictureCommentsLoader.addEventListener('click', getLoadComments);
 
     fillComments(item);
-    document.addEventListener('keydown', onPictureEsc);
+    document.addEventListener('keydown', closePhotoEsc);
     closeButton.addEventListener('click', closePhoto);
   });
-}
+};
 
 for (let i = 0; i < pictures.length; i++) {
-  openBigPicture(pictures[i], picturesUser[i]);
+  openBigPicture(pictures[i], createThumbnails[i]);
 }
+
+export { openBigPicture };
