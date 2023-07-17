@@ -6,14 +6,6 @@ const MAX_QUANTITY_TAGS = 5;
 const MAX_LENGTH_TAG = 20;
 const IS_VALIDE_HASHTAGS = /^#[a-zа-яё0-9]{1,19}$/i;
 
-const MessageError = {
-  REPEAT_HASHTAGS: 'хэш-теги повторяются',
-  INVALID_HASHTAG: 'введён невалидный хэш-тег',
-  QUANTITY_HASHTAGS: 'превышено количество хэш-тегов',
-  MAX_LENGTH_HASHTAG: `максимальная длина одного хэш-тега ${MAX_LENGTH_TAG} символов, включая решётку`,
-  RESET_ERROR: '',
-};
-
 // Данные для масштаба
 const STEP_VALUE = 25;
 const MIN_VALUE = 25;
@@ -85,6 +77,5 @@ export {
   MAX_QUANTITY_TAGS,
   MAX_LENGTH_TAG,
   IS_VALIDE_HASHTAGS,
-  MessageError,
   FILE_TYPES
 };

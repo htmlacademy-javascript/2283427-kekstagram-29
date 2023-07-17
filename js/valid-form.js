@@ -1,7 +1,7 @@
 import { closesModal, opensModal, checksDuplicateElements, normalizeString, isEscapeKey } from './utilities.js';
 import { loadScale, resetScale } from './scale.js';
 import { loadEffects, resetEffects } from './effects.js';
-import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS, MessageError } from './data.js';
+import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS } from './data.js';
 import { showUploadPhoto } from './avatar.js';
 
 // Глобальные переменные
@@ -15,6 +15,16 @@ const textDescription = uploadFormImg.querySelector('.text__description');
 const closeFormButton = uploadFormImg.querySelector('.img-upload__cancel');
 const submitButton = uploadFormImg.querySelector('.img-upload__submit');
 
+/** Текст ошибки при нарушении валидации */
+const MessageError = {
+  REPEAT_HASHTAGS: 'хэш-теги повторяются',
+  INVALID_HASHTAG: 'введён невалидный хэш-тег',
+  QUANTITY_HASHTAGS: 'превышено количество хэш-тегов',
+  MAX_LENGTH_HASHTAG: `максимальная длина одного хэш-тега ${MAX_LENGTH_TAG} символов, включая решётку`,
+  RESET_ERROR: '',
+};
+
+/** Текст на кнопке отправки формы. Меняется в зависимости от процесса отправки */
 const SubmitButtonText = {
   REST: 'Сохранить',
   SENDING: 'Сохраняю...'
@@ -27,7 +37,7 @@ const inputInFocused = () => {
   }
 };
 
-/** Закрытие Esc */
+/** Закрытие по Esc */
 const onModalEsc = (evt) => {
   if (isEscapeKey(evt) && !inputInFocused()) {
     closeModalForm();
