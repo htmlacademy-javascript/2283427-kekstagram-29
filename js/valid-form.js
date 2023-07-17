@@ -2,6 +2,7 @@ import { closesModal, opensModal, checksDuplicateElements, normalizeString, isEs
 import { loadScale, resetScale } from './scale.js';
 import { loadEffects, resetEffects } from './effects.js';
 import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS, MessageError } from './data.js';
+import { showUploadPhoto } from './avatar.js';
 
 // Глобальные переменные
 const uploadFile = document.querySelector('#upload-file');
@@ -61,6 +62,7 @@ const openModalForm = () => {
 };
 
 uploadInputImg.addEventListener('change', () => {
+  showUploadPhoto();
   openModalForm();
 });
 

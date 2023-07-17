@@ -1,6 +1,7 @@
 import { openBigPicture } from './open-big-picture.js';
 import { createThumbnails } from './rendering-thumbnail.js';
 
+// Глобальные переменные
 const container = document.querySelector('.pictures');
 
 const renderPictureModal = (evt, pictures) => {
@@ -14,6 +15,7 @@ const renderPictureModal = (evt, pictures) => {
   }
 };
 
+/** Создание галереи */
 const renderGallery = (pictures) => {
   container.addEventListener('click', renderPictureModal);
   createThumbnails(pictures);
