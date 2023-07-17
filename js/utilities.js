@@ -20,10 +20,36 @@ const checksDuplicateElements = (arr) => arr.length === new Set(arr).size;
 /** Приводит строку к нижнему регистру и удаляет концевые пробелы */
 const normalizeString = (str) => str.trim().split(' ').filter((string) => Boolean(string.length));
 
+/** Устранение дребезга */
+function debounce (callback, timeoutDelay = 500) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+/** Пропуск кадров */
+function throttle (callback, delayBetweenFrames) {
+  let lastTime = 0;
+
+  return (...rest) => {
+    const now = new Date();
+
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+}
+
 export {
   isEscapeKey,
   closesModal,
   opensModal,
   checksDuplicateElements,
-  normalizeString
+  normalizeString,
+  debounce,
+  throttle
 };
