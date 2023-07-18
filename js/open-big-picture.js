@@ -1,4 +1,3 @@
-import { createThumbnails } from './rendering-thumbnail.js';
 import { closesModal, opensModal, isEscapeKey } from './utilities.js';
 import { COMMENT_PER_PORTION } from './data.js';
 
@@ -13,7 +12,6 @@ const closeButton = bigPicture.querySelector('.big-picture__cancel');
 const pictureComments = bigPicture.querySelector('.social__comments');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const commentsCountList = bigPicture.querySelector('.social__comment-count');
-const pictures = document.querySelectorAll('.picture');
 let commentsShowArray = [];
 
 /** Закрытие по Esc */
@@ -87,31 +85,23 @@ function fillComments({comments}) {
 
 /**
 Открытие большой картинки при клике на миниатюру
-* @param {string} picture - DOM-элемент миниатюры, по которой мы кликаем
-* @param {object} item - объект картинки, которую мы генирировали в descriptions-photo. Сюда передается именно объект той миниатюры по который мы кликнули. Передаем сюда этот объект в файле main.js
+* @param {object} item - объект картинки, которую мы получаем с сервера
 */
-const openBigPicture = (picture, item) => {
-  picture.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    pictureComments.innerHTML = '';
-    bigPictureCommentsCount.classList.remove('hidden');
-    bigPictureCommentsLoader.classList.remove('hidden');
-    commentsShowArray = item.comments;
-    opensModal(bigPicture);
-    bigPictureImg.src = item.url;
-    likesCount.textContent = item.likes;
-    commentsCount.textContent = item.comments.length;
-    pictureSocialCaption.textContent = item.description;
-    bigPictureCommentsLoader.addEventListener('click', getLoadComments);
+const openBigPicture = (item) => {
+  pictureComments.innerHTML = '';
+  bigPictureCommentsCount.classList.remove('hidden');
+  bigPictureCommentsLoader.classList.remove('hidden');
+  commentsShowArray = item.comments;
+  opensModal(bigPicture);
+  bigPictureImg.src = item.url;
+  likesCount.textContent = item.likes;
+  commentsCount.textContent = item.comments.length;
+  pictureSocialCaption.textContent = item.description;
+  bigPictureCommentsLoader.addEventListener('click', getLoadComments);
 
-    fillComments(item);
-    document.addEventListener('keydown', closePhotoEsc);
-    closeButton.addEventListener('click', closePhoto);
-  });
+  fillComments(item);
+  document.addEventListener('keydown', closePhotoEsc);
+  closeButton.addEventListener('click', closePhoto);
 };
-
-for (let i = 0; i < pictures.length; i++) {
-  openBigPicture(pictures[i], createThumbnails[i]);
-}
 
 export { openBigPicture };

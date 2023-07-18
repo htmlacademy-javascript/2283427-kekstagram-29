@@ -5,22 +5,22 @@ import { createThumbnails } from './rendering-thumbnail.js';
 const container = document.querySelector('.pictures');
 
 const renderPictureModal = (evt, pictures) => {
-  const miniature = evt.target.closest('[data-miniature-id]');
+  const miniature = evt.target.closest('[data-picture-item-id]');
 
   if (miniature) {
     const picture = pictures.find(
-      (item) => item.id === Number(miniature.dataset.miniatureId)
+      (item) => item.id === Number(miniature.dataset.pictureItemId)
     );
-    return openBigPicture(picture);
+    openBigPicture(picture);
   }
 };
 
 /** Создание галереи */
 const renderGallery = (pictures) => {
-  container.addEventListener('click', renderPictureModal);
+  container.addEventListener('click', (evt) => {
+    renderPictureModal(evt, pictures);
+  });
   createThumbnails(pictures);
 };
 
-
 export { renderGallery };
-
