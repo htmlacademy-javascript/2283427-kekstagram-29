@@ -30,26 +30,11 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-/** Пропуск кадров */
-function throttle (callback, delayBetweenFrames) {
-  let lastTime = 0;
-
-  return (...rest) => {
-    const now = new Date();
-
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
-}
-
 export {
   isEscapeKey,
   closesModal,
   opensModal,
   checksDuplicateElements,
   normalizeString,
-  debounce,
-  throttle
+  debounce
 };

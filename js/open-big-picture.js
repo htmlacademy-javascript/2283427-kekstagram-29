@@ -91,15 +91,16 @@ const openBigPicture = (item) => {
   pictureComments.innerHTML = '';
   bigPictureCommentsCount.classList.remove('hidden');
   bigPictureCommentsLoader.classList.remove('hidden');
-  commentsShowArray = item.comments;
   opensModal(bigPicture);
-  bigPictureImg.src = item.url;
+
+  commentsShowArray = item.comments;
   likesCount.textContent = item.likes;
   commentsCount.textContent = item.comments.length;
   pictureSocialCaption.textContent = item.description;
-  bigPictureCommentsLoader.addEventListener('click', getLoadComments);
-
+  bigPictureImg.src = item.url;
   fillComments(item);
+
+  bigPictureCommentsLoader.addEventListener('click', getLoadComments);
   document.addEventListener('keydown', closePhotoEsc);
   closeButton.addEventListener('click', closePhoto);
 };

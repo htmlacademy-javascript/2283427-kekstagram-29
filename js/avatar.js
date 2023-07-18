@@ -3,6 +3,7 @@ import { FILE_TYPES } from './data.js';
 // Глобальные переменные
 const uploadInput = document.querySelector('.img-upload__input');
 const uploadImgPreview = document.querySelector('.img-upload__preview img');
+const uploadEffectsPreview = document.querySelectorAll('.effects__preview');
 
 /** Показ загруженной пользователем фотографии */
 const showUploadPhoto = () => {
@@ -12,6 +13,9 @@ const showUploadPhoto = () => {
 
   if (matches) {
     uploadImgPreview.src = URL.createObjectURL(file);
+    uploadEffectsPreview.forEach((preview) => {
+      preview.style.backgroundImage = `url(${uploadImgPreview.src})`;
+    });
   }
 };
 

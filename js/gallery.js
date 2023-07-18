@@ -3,24 +3,25 @@ import { createThumbnails } from './rendering-thumbnail.js';
 
 // Глобальные переменные
 const container = document.querySelector('.pictures');
-
-const renderPictureModal = (evt, pictures) => {
+let pictures = [];
+const renderPictureModal = (evt) => {
   const miniature = evt.target.closest('[data-picture-item-id]');
-
-  if (miniature) {
-    const picture = pictures.find(
-      (item) => item.id === Number(miniature.dataset.pictureItemId)
-    );
-    openBigPicture(picture);
+  if (!miniature) {
+    return;
   }
+
+  evt.preventDefault();
+  const picture = pictures.find(
+    (item) => item.id === +miniature.dataset.pictureItemId
+  );
+  openBigPicture(picture);
 };
 
 /** Создание галереи */
-const renderGallery = (pictures) => {
-  container.addEventListener('click', (evt) => {
-    renderPictureModal(evt, pictures);
-  });
-  createThumbnails(pictures);
+const renderGallery = (currentPictures) => {
+  pictures = currentPictures;
+  createThumbnails(pictures, container);
+  container.addEventListener('click', renderPictureModal);
 };
 
 export { renderGallery };
