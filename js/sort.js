@@ -51,4 +51,4 @@ const showSort = (loadedImages, cb) => {
   clickedSort(cb);
 };
 
-export { showSort };
+export { showSort, sortImages };

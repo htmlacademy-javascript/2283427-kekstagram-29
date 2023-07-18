@@ -36,6 +36,8 @@ const load = (route, errorText, method = Method.GET, body = null) =>
 /** Получение данных с сервера */
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);
 
+// console.log(getData());
+
 /** Отправка данных на сервер */
 const sendData = (body) => load(Route.SEND_DATA, ErrorText.SEND_DATA, Method.POST, body);
 

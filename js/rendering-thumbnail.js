@@ -1,5 +1,5 @@
 // Глобальные переменные
-const picturesList = document.querySelector('.pictures');
+// const picturesList = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 /** Создает миниатюру */
@@ -19,15 +19,15 @@ const createThumbnail = ({ description, url, likes, comments, id}) => {
 };
 
 /** Создает миниатюры */
-const createThumbnails = (pictures) => {
-  picturesList .querySelectorAll('.picture').forEach((element) => element.remove());
+const createThumbnails = (pictures, container) => {
+  container.querySelectorAll('.picture').forEach((element) => element.remove());
   const pictureFragment = document.createDocumentFragment();
   pictures.forEach((picture) => {
     const miniature = createThumbnail(picture);
     pictureFragment.append(miniature);
   });
 
-  picturesList .append(pictureFragment);
+  container.append(pictureFragment);
 };
 
 export { createThumbnails };
