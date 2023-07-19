@@ -71,15 +71,8 @@ function fillComments({comments}) {
   const showFirstComments = comments.slice(0, COMMENT_PER_PORTION);
   createPictureComments(showFirstComments);
   commentsCountList.textContent = `${showFirstComments.length} из ${comments.length} комментариев`;
-  if (comments.length % 10 === 1 && comments.length !== 11) {
-    commentsCountList.textContent = `${showFirstComments.length} из ${comments.length} комментария`;
-  }
   if (showFirstComments.length >= comments.length) {
-    commentsCountList.textContent = 'Комментарии:';
     bigPictureCommentsLoader.classList.add('hidden');
-  }
-  if (showFirstComments.length === 0) {
-    commentsCountList.textContent = 'Нет комментариев';
   }
 }
 
