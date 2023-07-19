@@ -1,5 +1,4 @@
 // Глобальные переменные
-// const picturesList = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 /** Создает миниатюру */

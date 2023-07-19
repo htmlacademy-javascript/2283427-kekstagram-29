@@ -14,18 +14,18 @@ let currentFilter = Sorts.DEFAULT;
 let images = [];
 
 /** Случайные изображения */
-const randomSort = () => Math.random() - 0.5;
+const getRandomSort = () => Math.random() - 0.5;
 
 /** Обсуждаемые изображения */
-const discussedSort = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
+const getDiscussedSort = (pictureA, pictureB) => pictureB.comments.length - pictureA.comments.length;
 
 /** Сортировка изображений */
-const sortImages = () => {
+const sortsImages = () => {
   switch (currentFilter) {
     case Sorts.RANDOM:
-      return [...images].sort(randomSort).slice(0, QUANTITY_IMAGES);
+      return [...images].sort(getRandomSort).slice(0, QUANTITY_IMAGES);
     case Sorts.DISCUSSED:
-      return [...images].sort(discussedSort);
+      return [...images].sort(getDiscussedSort);
     default:
       return [...images];
   }
@@ -39,7 +39,7 @@ const clickedSort = (cb) => {
       filterImg.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
       clickBtn.classList.add('img-filters__button--active');
       currentFilter = clickBtn.id;
-      cb(sortImages());
+      cb(sortsImages());
     }
   });
 };
@@ -51,4 +51,4 @@ const showSort = (loadedImages, cb) => {
   clickedSort(cb);
 };
 
-export { showSort, sortImages };
+export { showSort, sortsImages };
