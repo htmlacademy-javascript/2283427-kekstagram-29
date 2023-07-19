@@ -44,6 +44,7 @@ const onModalEsc = (evt) => {
 const pristine = new Pristine(uploadFormImg, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'pristine-error',
 });
 
 /** Закрытие формы */
@@ -64,7 +65,6 @@ const openModalForm = () => {
   closeFormButton.addEventListener('click', closeModalForm);
   loadScale();
   loadEffects();
-  textDescription.value = '';
 };
 
 uploadInputImg.addEventListener('change', () => {

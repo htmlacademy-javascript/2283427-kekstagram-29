@@ -1,5 +1,5 @@
 /** Время показа ошибки */
-const ALERT_SHOW_TIME = 5000;
+const ALERT_SHOW_TIME = 2000;
 
 /** Создает и показывает alert */
 const showAlert = (message) => {

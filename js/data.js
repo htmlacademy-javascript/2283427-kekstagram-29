@@ -19,7 +19,7 @@ const FILTERS = [
     style: 'none',
     min: 0,
     max: 100,
-    step: 1,
+    step: 0.1,
     unit:''
   },
   {
@@ -65,7 +65,7 @@ const FILTERS = [
 ];
 
 // Форматы загружаемого изображения
-const FILE_TYPES = ['gif', 'webp', 'jpeg', 'png', 'avif', 'jpg', 'svg'];
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 export {
   COMMENT_PER_PORTION,

@@ -12,7 +12,7 @@ const closeButton = bigPicture.querySelector('.big-picture__cancel');
 const pictureComments = bigPicture.querySelector('.social__comments');
 const commentsCount = bigPicture.querySelector('.comments-count');
 const commentsCountList = bigPicture.querySelector('.social__comment-count');
-let arrComments = [];
+let commentsShowArray = [];
 
 /** Закрытие по Esc */
 const closePhotoEsc = (evt) => {
@@ -52,13 +52,13 @@ const createPictureComments = (comments) => {
 
 /** Отрисовка следующей порции комментариев */
 function getLoadComments () {
-  if (!arrComments.length) {
+  if (!commentsShowArray.length) {
     return;
   }
-  const additionalComments = arrComments.slice(pictureComments.children.length, pictureComments.children.length + COMMENT_PER_PORTION);
+  const additionalComments = commentsShowArray.slice(pictureComments.children.length, pictureComments.children.length + COMMENT_PER_PORTION);
   createPictureComments(additionalComments);
-  commentsCountList.textContent = `${pictureComments.children.length} из ${arrComments.length} комментариев`;
-  if (arrComments.length <= pictureComments.children.length) {
+  commentsCountList.textContent = `${pictureComments.children.length} из ${commentsShowArray.length} комментариев`;
+  if (commentsShowArray.length <= pictureComments.children.length) {
     bigPictureCommentsLoader.classList.add('hidden');
   }
 }
@@ -67,7 +67,7 @@ function getLoadComments () {
 Отрисовка начальных комментариев
 * @param {array} comments - массив комментариев из объекта
 */
-function rendersComments({comments}) {
+function fillComments({comments}) {
   const showFirstComments = comments.slice(0, COMMENT_PER_PORTION);
   createPictureComments(showFirstComments);
   commentsCountList.textContent = `${showFirstComments.length} из ${comments.length} комментариев`;
@@ -93,12 +93,12 @@ const openBigPicture = (item) => {
   bigPictureCommentsLoader.classList.remove('hidden');
   opensModal(bigPicture);
 
-  arrComments = item.comments;
+  commentsShowArray = item.comments;
   likesCount.textContent = item.likes;
   commentsCount.textContent = item.comments.length;
   pictureSocialCaption.textContent = item.description;
   bigPictureImg.src = item.url;
-  rendersComments(item);
+  fillComments(item);
 
   bigPictureCommentsLoader.addEventListener('click', getLoadComments);
   document.addEventListener('keydown', closePhotoEsc);
