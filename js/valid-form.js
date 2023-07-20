@@ -44,7 +44,7 @@ const onModalEsc = (evt) => {
 const pristine = new Pristine(uploadFormImg, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'pristine-error',
+  errorTextClass: 'img-upload__field-wrapper--error',
 });
 
 /** Закрытие формы */
