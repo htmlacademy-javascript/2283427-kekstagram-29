@@ -1,4 +1,3 @@
-
 /** Адрес удаленного сервера */
 const BASE_URL = 'https://29.javascript.pages.academy/kekstagram';
 

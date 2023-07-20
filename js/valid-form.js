@@ -70,6 +70,7 @@ const openModalForm = () => {
 uploadInputImg.addEventListener('change', () => {
   showUploadPhoto();
   openModalForm();
+  textDescription.innerHTML = '';
 });
 
 /** Проверка хэштегов на уникальность */
