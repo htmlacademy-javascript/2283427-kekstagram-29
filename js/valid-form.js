@@ -36,6 +36,7 @@ const getInputInFocused = () => document.activeElement === textHashtags || docum
 /** Закрытие по Esc */
 const onModalEsc = (evt) => {
   if (isEscapeKey(evt) && !getInputInFocused()) {
+    evt.preventDefault();
     closeModalForm();
   }
 };
