@@ -16,6 +16,7 @@ const closeMessage = () => {
   }
   document.removeEventListener('click', closeClickOutside);
   document.removeEventListener('keydown', closeMessageEsc);
+  document.addEventListener('keydown', onModalEsc);
 };
 
 /** Показывает сообщение об успешной загрузке изображения */

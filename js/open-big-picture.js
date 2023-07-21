@@ -57,7 +57,7 @@ function getLoadComments () {
   }
   const additionalComments = commentsShowArray.slice(pictureComments.children.length, pictureComments.children.length + COMMENT_PER_PORTION);
   createPictureComments(additionalComments);
-  commentsCountList.textContent = `${pictureComments.children.length} из ${commentsShowArray.length} комментариев`;
+  commentsCountList.innerHTML = `${pictureComments.children.length} из <span class="comments-count">${commentsShowArray.length}</span> комментариев`;
   if (commentsShowArray.length <= pictureComments.children.length) {
     bigPictureCommentsLoader.classList.add('hidden');
   }
@@ -70,16 +70,9 @@ function getLoadComments () {
 function fillComments({comments}) {
   const showFirstComments = comments.slice(0, COMMENT_PER_PORTION);
   createPictureComments(showFirstComments);
-  commentsCountList.textContent = `${showFirstComments.length} из ${comments.length} комментариев`;
-  if (comments.length % 10 === 1 && comments.length !== 11) {
-    commentsCountList.textContent = `${showFirstComments.length} из ${comments.length} комментария`;
-  }
+  commentsCountList.innerHTML = `${showFirstComments.length} из <span class="comments-count">${comments.length}</span> комментариев`;
   if (showFirstComments.length >= comments.length) {
-    commentsCountList.textContent = 'Комментарии:';
     bigPictureCommentsLoader.classList.add('hidden');
-  }
-  if (showFirstComments.length === 0) {
-    commentsCountList.textContent = 'Нет комментариев';
   }
 }
 

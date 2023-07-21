@@ -4,17 +4,6 @@ import { loadEffects, resetEffects } from './effects.js';
 import { MAX_QUANTITY_TAGS, MAX_LENGTH_TAG, IS_VALIDE_HASHTAGS } from './data.js';
 import { showUploadPhoto } from './avatar.js';
 
-// Глобальные переменные
-const uploadFile = document.querySelector('#upload-file');
-const uploadImg = document.querySelector('.img-upload');
-const uploadInputImg = uploadImg.querySelector('.img-upload__input');
-const uploadOverlayImg = uploadImg.querySelector('.img-upload__overlay');
-const uploadFormImg = uploadImg.querySelector('.img-upload__form');
-const textHashtags = uploadFormImg.querySelector('.text__hashtags');
-const textDescription = uploadFormImg.querySelector('.text__description');
-const closeFormButton = uploadFormImg.querySelector('.img-upload__cancel');
-const submitButton = uploadFormImg.querySelector('.img-upload__submit');
-
 /** Текст ошибки при нарушении валидации */
 const MessageError = {
   REPEAT_HASHTAGS: 'хэш-теги повторяются',
@@ -30,16 +19,24 @@ const SubmitButtonText = {
   SENDING: 'Сохраняю...'
 };
 
+// Глобальные переменные
+const uploadFile = document.querySelector('#upload-file');
+const uploadImg = document.querySelector('.img-upload');
+const uploadInputImg = uploadImg.querySelector('.img-upload__input');
+const uploadOverlayImg = uploadImg.querySelector('.img-upload__overlay');
+const uploadFormImg = uploadImg.querySelector('.img-upload__form');
+const textHashtags = uploadFormImg.querySelector('.text__hashtags');
+const textDescription = uploadFormImg.querySelector('.text__description');
+const closeFormButton = uploadFormImg.querySelector('.img-upload__cancel');
+const submitButton = uploadFormImg.querySelector('.img-upload__submit');
+
 /** Если поле в фокусе, то форма не закроется через Esc */
-const inputInFocused = () => {
-  if (document.activeElement === textHashtags || document.activeElement === textDescription) {
-    return true;
-  }
-};
+const getInputInFocused = () => document.activeElement === textHashtags || document.activeElement === textDescription;
 
 /** Закрытие по Esc */
 const onModalEsc = (evt) => {
-  if (isEscapeKey(evt) && !inputInFocused()) {
+  if (isEscapeKey(evt) && !getInputInFocused()) {
+    evt.preventDefault();
     closeModalForm();
   }
 };
@@ -48,6 +45,7 @@ const onModalEsc = (evt) => {
 const pristine = new Pristine(uploadFormImg, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
+  errorTextClass: 'img-upload__field-wrapper--error',
 });
 
 /** Закрытие формы */
@@ -68,12 +66,12 @@ const openModalForm = () => {
   closeFormButton.addEventListener('click', closeModalForm);
   loadScale();
   loadEffects();
-  textDescription.value = '';
 };
 
 uploadInputImg.addEventListener('change', () => {
   showUploadPhoto();
   openModalForm();
+  textDescription.innerHTML = '';
 });
 
 /** Проверка хэштегов на уникальность */

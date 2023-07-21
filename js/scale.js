@@ -8,7 +8,7 @@ const contolValue = uploadImg.querySelector('.scale__control--value');
 const uploadPreviewImg = uploadImg.querySelector('.img-upload__preview img');
 
 /** Вывод результата в поле */
-const scaleImg = (value) => {
+const showResult = (value) => {
   uploadPreviewImg.style.transform = `scale(${value / 100})`;
   contolValue.value = `${value}%`;
 };
@@ -19,9 +19,9 @@ const onSmallControlClick = () => {
   const newValue = newElement - STEP_VALUE;
 
   if (newValue < MIN_VALUE) {
-    scaleImg(MIN_VALUE);
+    showResult(MIN_VALUE);
   } else {
-    scaleImg(newValue);
+    showResult(newValue);
   }
 };
 
@@ -31,15 +31,15 @@ const onBigControlClick = () => {
   const newValue = newElement + STEP_VALUE;
 
   if (newValue > MAX_VALUE) {
-    scaleImg(MAX_VALUE);
+    showResult(MAX_VALUE);
   } else {
-    scaleImg(newValue);
+    showResult(newValue);
   }
 };
 
 /** Сброс по умолчанию и удаление обработчиков */
 const resetScale = () => {
-  scaleImg(DEFAULT_VALUE);
+  showResult(DEFAULT_VALUE);
   smallControl.removeEventListener('click', onSmallControlClick);
   bigControl.removeEventListener('click', onBigControlClick);
 };
